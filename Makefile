@@ -4,6 +4,8 @@
 
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
+export http_proxy=http://192.168.5.61:1082
+export https_proxy=http://192.168.5.61:1082
 
 default: metal system external smoke-test post-install clean
 
@@ -34,7 +36,7 @@ tools:
 		--network host \
 		--env "KUBECONFIG=${KUBECONFIG}" \
 		--env "http_proxy=http://192.168.5.61:1082" \
-		--env "http_proxy=http://192.168.5.61:1082" \
+		--env "https_proxy=http://192.168.5.61:1082" \
 		--volume "/var/run/docker.sock:/var/run/docker.sock" \
 		--volume $(shell pwd):$(shell pwd) \
 		--volume ${HOME}/.ssh:/root/.ssh \
@@ -44,8 +46,6 @@ tools:
 		--workdir $(shell pwd) \
 		--entrypoint /bin/sh \
 		docker.io/nixos/nix -c "\
-		export http_proxy=http://192.168.5.61:1082 && \
-     	export https_proxy=http://192.168.5.61:1082 && \
 		git config --global --add safe.directory $(shell pwd) && \
 		nix --experimental-features 'nix-command flakes' develop"
 
