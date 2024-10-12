@@ -4,8 +4,8 @@
 
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
-export http_proxy=http://192.168.5.61:1082
-export https_proxy=http://192.168.5.61:1082
+
+SET_PROXY = export http_proxy=http://192.168.5.61:1082 && export https_proxy=http://192.168.5.61:1082
 
 default: metal system external smoke-test post-install clean
 
@@ -29,6 +29,7 @@ post-install:
 	@./scripts/hacks
 
 tools:
+	@$(SET_PROXY)
 	@docker run \
 		--rm \
 		--interactive \
@@ -60,3 +61,6 @@ docs:
 
 git-hooks:
 	pre-commit install
+
+set-proxy:
+	@$(SET_PROXY)
