@@ -33,6 +33,8 @@ tools:
 		--tty \
 		--network host \
 		--env "KUBECONFIG=${KUBECONFIG}" \
+		--env "http_proxy=http://192.168.5.61:1082" \
+		--env "http_proxy=http://192.168.5.61:1082" \
 		--volume "/var/run/docker.sock:/var/run/docker.sock" \
 		--volume $(shell pwd):$(shell pwd) \
 		--volume ${HOME}/.ssh:/root/.ssh \
