@@ -40,7 +40,12 @@ tools:
 		--volume homelab-tools-cache:/root/.cache \
 		--volume homelab-tools-nix:/nix \
 		--workdir $(shell pwd) \
-		docker.io/nixos/nix nix --experimental-features 'nix-command flakes' develop
+		--entrypoint /bin/sh \
+		docker.io/nixos/nix -c "\
+		export http_proxy=http://192.168.5.61:1082 && \
+     	export https_proxy=http://192.168.5.61:1082 && \
+		git config --global --add safe.directory $(shell pwd) && \
+		nix --experimental-features 'nix-command flakes' develop"
 
 test:
 	make -C test
